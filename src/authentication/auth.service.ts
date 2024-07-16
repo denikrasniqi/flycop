@@ -56,13 +56,21 @@ export class AuthService {
   }
 
   async register(createDto: RegisterUserDto): Promise<any> {
-    const { name, email, username, password, role } = createDto;
+    const { name, email, username, password, role = 2 } = createDto;
 
     if (!username) {
       throw new HttpException('Username is required', HttpStatus.BAD_REQUEST);
     }
+    let plainPassword;
+    let hashedPassword;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(role);
+    if (role != 1) {
+      plainPassword = Math.random().toString(36).slice(-8);
+      hashedPassword = await bcrypt.hash(plainPassword, 10);
+    } else {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
 
     const createUser = new User();
     createUser.firstName = name;
@@ -105,6 +113,6 @@ export class AuthService {
       sub: newUser.id,
       roles: [role],
     });
-    return { token };
+    return { token, plainPassword };
   }
 }
