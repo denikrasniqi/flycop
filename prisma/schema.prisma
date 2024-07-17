@@ -41,3 +41,15 @@ model UserRole {
 
   @@id([userId, roleId])
 }
+
+model FlightInformation {
+  id                      Int      @id @default(autoincrement())
+  flightNumber            String
+  airline                 String
+  departureAirport        String
+  arrivalAirport          String
+  scheduledDepartureTime  DateTime
+  actualDepartureTime     DateTime
+  scheduledArrivalTime    DateTime
+  actualArrivalTime       DateTime
+}
