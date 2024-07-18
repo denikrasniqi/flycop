@@ -15,7 +15,6 @@ export class UserService {
     const users = await this.prisma.user.findMany({
       select: {
         id: true,
-        username: true,
         email: true,
         firstName: true,
         lastName: true,
@@ -37,7 +36,6 @@ export class UserService {
     // Map the Prisma user data to the UserDTO
     const usersDTO: UserDTO[] = users.map((user) => ({
       id: user.id,
-      username: user.username,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -52,25 +50,24 @@ export class UserService {
   async createUser(data: User): Promise<User> {
     const existing = await this.prisma.user.findUnique({
       where: {
-        username: data.username,
+        email: data.email,
       },
     });
-    const username = this.getUserByUsername(data.username);
-    const email = this.getUserEmail(data.email);
+    // const email = this.getUserByEmail(data.email);
+    // const email = this.getUserEmail(data.email);
 
     return this.prisma.user.create({
       data,
     });
   }
-  async getUserByUsername(username: string): Promise<Partial<User> | null> {
+  async getUserByEmail(email: string): Promise<Partial<User> | null> {
     // eslint-disable-next-line no-useless-catch
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          username: username,
+          email: email,
         },
         select: {
-          username: true,
           email: true,
           firstName: true,
           lastName: true,
@@ -84,26 +81,7 @@ export class UserService {
     }
   }
 
-  async getUserEmail(email: string): Promise<Partial<User> | null> {
-    // eslint-disable-next-line no-useless-catch
-    try {
-      let hasEmail;
-      const user = await this.prisma.user.findUnique({
-        where: {
-          email: email,
-        },
-      });
-
-      if (user === null) {
-        hasEmail = true;
-      }
-
-      return user;
-    } catch (error) {
-      throw error;
-    }
-  }
-
+  
   async getUserFromToken(subId: string): Promise<any> {
     try {
       const data = await this.prisma.user.findUnique({

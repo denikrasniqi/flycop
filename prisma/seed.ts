@@ -13,8 +13,7 @@ async function main() {
   // Seed the User table
   const adminUser = await prisma.user.create({
     data: {
-      username: 'admin',
-      email: 'admin@example.com',
+      email: 'admin@gmail.com',
       password: await bcrypt.hash('password', 10),
       firstName: 'Admin',
       lastName: 'User',
