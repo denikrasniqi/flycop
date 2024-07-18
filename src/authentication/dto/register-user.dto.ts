@@ -1,9 +1,6 @@
-import { IsString, Length, IsNumber } from 'class-validator';
+import { IsString, Length, IsNumber, IsEmail } from 'class-validator';
 
 export class RegisterUserDto {
-  @IsString()
-  @Length(5, 15)
-  username: string;
 
   @IsString()
   @Length(6, 15)
@@ -13,7 +10,7 @@ export class RegisterUserDto {
   @Length(5, 15)
   name: string;
 
-  @IsString()
+  @IsEmail()
   @Length(5, 50)
   email: string;
 

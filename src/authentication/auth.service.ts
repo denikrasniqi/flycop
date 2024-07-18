@@ -22,13 +22,13 @@ export class AuthService {
   ) {}
 
   async login(loginDto: LoginDto): Promise<any> {
-    const { username, password } = loginDto;
+    const { email, password } = loginDto;
     const user = await this.prismaService.user.findUnique({
-      where: { username },
+      where: { email },
       include: { userRoles: { include: { role: true } } },
     });
-    if (!username) {
-      throw new HttpException('Username is required', HttpStatus.BAD_REQUEST);
+    if (!email) {
+      throw new HttpException('Email is required', HttpStatus.BAD_REQUEST);
     }
 
     if (!password) {
@@ -36,19 +36,19 @@ export class AuthService {
     }
 
     if (!user) {
-      throw new UnauthorizedException('Invalid username or password');
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid username or password');
+      throw new UnauthorizedException('Invalid email or password');
     }
     user.password = undefined;
     const roles = user.userRoles.map((userRole) => userRole.role.id);
 
     const token = this.jwtService.sign({
-      username: user.username,
+      email: user.email,
       sub: user.id,
       roles: roles,
     });
@@ -56,15 +56,14 @@ export class AuthService {
   }
 
   async register(createDto: RegisterUserDto): Promise<any> {
-    const { name, email, username, password, role = 2 } = createDto;
+    const { name, email, password, role = 2 } = createDto;
 
-    if (!username) {
-      throw new HttpException('Username is required', HttpStatus.BAD_REQUEST);
+    if (!email) {
+      throw new HttpException('Email is required', HttpStatus.BAD_REQUEST);
     }
     let plainPassword;
     let hashedPassword;
 
-    console.log(role);
     if (role != 1) {
       plainPassword = Math.random().toString(36).slice(-8);
       hashedPassword = await bcrypt.hash(plainPassword, 10);
@@ -75,18 +74,18 @@ export class AuthService {
     const createUser = new User();
     createUser.firstName = name;
     createUser.email = email;
-    createUser.username = username;
     createUser.password = hashedPassword;
 
-    const user = await this.userService.getUserByUsername(username);
+    const user = await this.userService.getUserByEmail(email);
 
     if (user) {
       throw new HttpException(
-        'Username already exists',
+        'Email already exists',
         HttpStatus.BAD_REQUEST,
       );
     }
-    const userByEmail = await this.userService.getUserEmail(email);
+    
+    const userByEmail = await this.userService.getUserByEmail(email);
 
     if (userByEmail) {
       throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
@@ -109,7 +108,7 @@ export class AuthService {
     });
 
     const token = this.jwtService.sign({
-      username: newUser.username,
+      email: newUser.email,
       sub: newUser.id,
       roles: [role],
     });
