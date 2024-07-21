@@ -1,7 +1,7 @@
 export class CreatePassengerDto {
   firstName: string;
   lastName: string;
-  birthdate: Date;
+  birthdate: string;
 }
 
 export class CreateFlightFormDto {
@@ -18,7 +18,7 @@ export class CreateFlightFormDto {
   disruptionDescription?: string;
   firstName: string;
   lastName: string;
-  birthdate: Date;
+  birthdate: string;
   email: string;
   confirmEmail: string;
   address: string;

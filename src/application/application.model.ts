@@ -14,7 +14,7 @@ export class FlightInformationDTO implements Prisma.FlightFormCreateInput {
   disruptionDescription?: string;
   firstName: string;
   lastName: string;
-  birthdate: Date;
+  birthdate: string;
   email: string;
   confirmEmail: string;
   address: string;
