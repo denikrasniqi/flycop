@@ -14,16 +14,17 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  username  String    @unique
-  email     String    @unique
+  id        String      @id @default(uuid())
+  username  String      @unique
+  email     String      @unique
   password  String
   firstName String?
   lastName  String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  isDeleted Boolean @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  isDeleted Boolean     @default(false)
   userRoles UserRole[]
+  flightForms FlightForm[]
 }
 
 model Role {
@@ -42,14 +43,32 @@ model UserRole {
   @@id([userId, roleId])
 }
 
-model FlightInformation {
-  id                      Int      @id @default(autoincrement())
-  flightNumber            String
-  airline                 String
-  departureAirport        String
-  arrivalAirport          String
-  scheduledDepartureTime  DateTime
-  actualDepartureTime     DateTime
-  scheduledArrivalTime    DateTime
-  actualArrivalTime       DateTime
+model FlightForm {
+  id                       Int      @id @default(autoincrement())
+  airportDeparture         String?
+  finalDestination         String?
+  hasConnectingFlights     Boolean?
+  connectingFlights        Json?
+  departureDate            DateTime?
+  airlineName              String?
+  flightNumber             String?
+  reasonForDelay           String?
+  timeArrived              String?
+  airlineDisruptionReason  String?
+  disruptionDescription    String?
+  firstName                String?
+  lastName                 String?
+  birthdate                DateTime?
+  email                    String?
+  confirmEmail             String?
+  address                  String?
+  city                     String?
+  country                  String?
+  phoneNumber              String?
+  passengers               Json?
+  formFourString           String?
+  bookingReference         String?
+  userId                   String?
+  user                     User?      @relation(fields: [userId], references: [id])
+  progress                 Int       @default(0) // Track progress with default value of 0
 }

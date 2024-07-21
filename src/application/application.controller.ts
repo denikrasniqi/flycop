@@ -1,5 +1,5 @@
 import { Body, Controller, Post, HttpException, HttpStatus, Req } from '@nestjs/common';
-import { FlightInformationDTO } from './dto/flight-information.dto';
+import { CreateFlightFormDto } from './dto/flight-information.dto';
 import { ApplicationService } from './application.service';
 
 @Controller('/flight-information')
@@ -9,7 +9,7 @@ export class ApplicationController {
   @Post()
   async submitApplication(
     @Req() request: Request,
-    @Body() postData: FlightInformationDTO,
+    @Body() postData: CreateFlightFormDto,
   ): Promise<any> {
     return this.flightInformationService.submitApplication(postData);
   }

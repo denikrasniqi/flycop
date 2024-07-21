@@ -1,5 +1,5 @@
 import { PrismaService } from 'src/prisma.service';
-import { FlightInformationDTO } from './dto/flight-information.dto';
+import { CreateFlightFormDto } from './dto/flight-information.dto';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -7,10 +7,10 @@ export class ApplicationService {
   constructor(private prisma: PrismaService) {}
   
   async submitApplication(
-    flightinformation: FlightInformationDTO,
+    flightinformation: CreateFlightFormDto,
   ): Promise<any> {
     console.log(flightinformation);
-    const data = await this.prisma.flightInformation.create({
+    const data = await this.prisma.flightForm.create({
       data: {
         ...flightinformation,
         // user: {
