@@ -6,7 +6,7 @@ import { ApplicationService } from './application.service';
 export class ApplicationController {
   constructor(private readonly flightInformationService: ApplicationService) {}
 
-  @Post()
+  @Post() // Create first
   async submitApplication(
     @Req() request: Request,
     @Body() postData: CreateFlightFormDto,
@@ -14,22 +14,22 @@ export class ApplicationController {
     return this.flightInformationService.submitApplication(postData);
   }
 
-  @Put(':id/flight-details')
+  @Put(':id/flight-details') //Update first form if needed
   async updateFlightDetails(@Param('id') id: string, @Body() updateFlightFormDto: Partial<CreateFlightFormDto>) {
     return this.flightInformationService.updateFlightDetails(+id, updateFlightFormDto);
   }
 
-  @Put(':id/delay-details')
+  @Put(':id/delay-details') // Update Second form
   async updateDelayDetails(@Param('id') id: string, @Body() updateFlightFormDto: Partial<CreateFlightFormDto>) {
     return this.flightInformationService.updateDelayDetails(+id, updateFlightFormDto);
   }
 
-  @Put(':id/personal-details')
+  @Put(':id/personal-details')// Update Third form
   async updatePersonalDetails(@Param('id') id: string, @Body() updateFlightFormDto: Partial<CreateFlightFormDto>) {
     return this.flightInformationService.updatePersonalDetails(+id, updateFlightFormDto);
   }
 
-  @Put(':id/form-four')
+  @Put(':id/form-four') // Update Fourth form
   async updateFormFour(@Param('id') id: string, @Body() updateFlightFormDto: Partial<CreateFlightFormDto>) {
     return this.flightInformationService.updateFormFour(+id, updateFlightFormDto);
   }

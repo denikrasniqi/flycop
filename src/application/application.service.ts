@@ -72,7 +72,7 @@ export class ApplicationService {
     console.log(user)
     const application = await this.prisma.flightForm.update({
       where: { id },
-      data: { ...data ,progress: 4 },
+      data: { ...data ,userId: user.id , progress: 4 },
     });
       return { message: 'Application submitted successfully.', application };
   }
