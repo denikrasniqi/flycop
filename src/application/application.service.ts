@@ -69,7 +69,6 @@ export class ApplicationService {
       password: null,
       role: 2, 
     }) as any;
-    console.log(user)
     const application = await this.prisma.flightForm.update({
       where: { id },
       data: { ...data ,userId: user.id , progress: 4 },

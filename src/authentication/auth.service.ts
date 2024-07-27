@@ -112,6 +112,6 @@ export class AuthService {
       sub: newUser.id,
       roles: [role],
     });
-    return { token, plainPassword };
+    return { token, userId: newUser.id ,  plainPassword };
   }
 }
